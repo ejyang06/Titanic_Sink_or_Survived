@@ -1,0 +1,15 @@
+
+Common Challenges in cliival prediction
+-nonlinearity:
+-Interactions:
+-Informative missingness : we might have unhealthy person's health infor but not the healthy person because
+they don't go to see the doctor
+-Overfitting:
+-Transparency and plausibility matter
+
+AFTERNOON:
+is.na(dfd$age)
+mean(is.na(dfd$age))
+Question: the mean of null value for age column?????
+
+

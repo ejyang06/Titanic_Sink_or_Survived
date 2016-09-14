@@ -1,0 +1,48 @@
+
+PROC SQL;
+   CREATE TABLE WORK.QUERY_FOR_TITANIC__TRAIN AS 
+   SELECT t1.pclass, 
+          t1.survived, 
+          /* lastname */
+            (strip(substr(name,1,index(name, ',') - 1) )) AS lastname, 
+          /* firstname */
+            (strip(substr(name,index(name, ',') +1) )) AS firstname, 
+          t1.name, 
+          t1.sex, 
+          t1.age, 
+          t1.sibsp, 
+          t1.parch, 
+          /* family */
+            (case when input(sibsp,8.0) >= 1 or input(parch,8.0) >= 1 then 1 else 0 end) AS family, 
+          t1.ticket, 
+          t1.fare, 
+          t1.cabin, 
+          t1.embarked, 
+          t1.'home.dest'n, 
+          t1.passengerId
+      FROM WORK.'TITANIC_ TRAIN'n t1
+      ORDER BY lastname,
+               t1.pclass,
+               t1.ticket,
+               t1.'home.dest'n;
+QUIT;
+
+
+PROC SQL;
+   CREATE TABLE fare_tiers AS 
+   SELECT t1.pclass
+        , (case when t1.age > 0 and t1.age <= 18 then ' 0-18'
+                when t1.age > 18 and t1.age <= 55 then '18-55'
+                when t1.age > 55                 then '55+'
+            end) as age_grp
+        , min(input(t1.fare,8.0)) as min_fare
+        , max(input(t1.fare,8.0)) as max_fare
+        , mean(input(t1.fare,8.0)) as mean_fare
+        , median(input(t1.fare,8.0)) as median_fare
+        , count(*) as pclass_ct
+          
+      FROM WORK.'TITANIC_ TRAIN'n t1
+      where t1.fare ne '0'
+      group by 1,2
+      ;
+QUIT;

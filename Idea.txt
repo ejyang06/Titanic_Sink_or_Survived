@@ -1,0 +1,15 @@
+
+
+#Data Science-Titanic Dataset
+
+# Predicting whether the passengers survived or died by the given predictors
+
+# Thought1:
+# Running logistic regression (survived or died)~ . (all predictors)
+# Using step wise methods to find the "important variables"
+# Data/model Validation
+
+null <- glm(Y ~ X1, family=binomial, data=titanictanic[train,])
+full <- glm(Y ~., family=binomial, data=titanic[train,])
+reg <- step(null, scope=formula(full), direction="forward", k=log(n))
+# http://faculty.mccombs.utexas.edu/carlos.carvalho/teaching/Section6.pdf
